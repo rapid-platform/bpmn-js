@@ -51,8 +51,35 @@ const configs = distros.reduce(function(configs, distro) {
       input: `./lib/${input}.js`,
       output: {
         name: 'BpmnJS',
+        file: `${outputDir}/${output}.mjs`,
+        format: 'es'
+      },
+      plugins: pgl([
+        banner(output)
+      ], 'development')
+    },
+    {
+      input: `./lib/${input}.js`,
+      output: {
+        name: 'BpmnJS',
         file: `${outputDir}/${output}.production.min.js`,
         format: 'umd'
+      },
+      plugins: pgl([
+        banner(output, true),
+        terser({
+          output: {
+            comments: /license|@preserve/
+          }
+        })
+      ], 'production')
+    },
+    {
+      input: `./lib/${input}.js`,
+      output: {
+        name: 'BpmnJS',
+        file: `${outputDir}/${output}.production.min.mjs`,
+        format: 'es'
       },
       plugins: pgl([
         banner(output, true),
